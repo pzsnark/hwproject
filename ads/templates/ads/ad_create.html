@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Добавить объявление{% endblock %}
+{% block content %}
+<form method="post" enctype="multipart/form-data">
+{% csrf_token %}
+    {# {{ form.as_table }} будет отображать их как ячейки таблицы, завернутые в <tr> теги #}
+    {# {{ form.as_p }} сделает их завернутыми в <p> теги #}
+    {# {{ form.as_ul }} сделает их завернутыми в <li> теги #}
+    {{ form.as_p }}
+<button type="submit">Создать пост</button>
+    {{ ad_create_result }}
+</form>
+{% endblock %}

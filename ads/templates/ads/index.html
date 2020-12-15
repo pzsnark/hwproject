@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Главная страница{% endblock %}
+{% block content %}
+{% if last_ad %}
+<ul>
+    {% for ad in last_ad %}
+    <li>
+        <p> Автор: {{ ad.author }} </p>
+        <p> {% for set in ad.categories.all %}
+            {{ set }}
+            {% endfor %}
+        </p>
+        <p> {{ ad.date_pub }} </p>
+        <a href="{% url 'ads:ad_detail' ad.id %}">
+            <p>{{ ad.title }}</p>
+        </a>
+        {% if ad.photo %}
+            <p> <img alt="ad's image" src="{{ ad.photo.url }}" style="width: 10%; height: 10%;"></p>
+            {% else %}
+            <p>Нет ни одной фотографии</p>
+        {% endif %}
+        <p> {{ ad.description }} </p>
+        <hr>
+        {% endfor %}
+</ul>
+{% else %}
+<p>Нет ни одной публикации</p>
+{% endif %}
+{% endblock %}}

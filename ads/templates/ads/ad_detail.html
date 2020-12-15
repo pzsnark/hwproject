@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Объявление{% endblock %}
+{% block content %}
+{% if ad_detail %}
+<ul>
+    <li>
+        <p> {{ ad_detail.author }} </p>
+        <p> {% for set in ad_detail.categories.all %}
+            {{ set }}
+            {% endfor %}
+        </p>
+            <p> {{ ad_detail.date_pub }} </p>
+            {{ ad_detail.title }}
+            {% if ad_detail.photo %}
+            <p> <img alt="ad's image" src="{{ ad_detail.photo.url }}" style="width: 50%; height: 50%;"></p>
+            {% else %}
+            <p>Нет ни одной фотографии</p>
+            {% endif %}
+        <p> {{ ad_detail.description }} </p>
+        {% if request.user == ad_detail.author %}
+        <a href="{% url 'ads:ad_edit' ad_id=ad_detail.id %}">Редактировать</a>
+        {% endif %}
+        <form method="POST" action="{% url 'ads:ad_favor' ad_id=ad_detail.id %}">
+            {% csrf_token %}
+            <button type="submit">{{ button_fav }}</button>
+        </form>
+        {% if request.user == ad_detail.author %}
+        <form method="GET" action="{% url 'ads:ad_delete' ad_id=ad_detail.id %}">
+            {% csrf_token %}
+        <button type="submit">Удалить</button>
+            {{ context }}
+        {% endif %}
+        </form>
+        <hr>
+    </li>
+</ul>
+{% else %}
+<p>Нет ни одной публикации</p>
+{% endif %}
+{% endblock %}

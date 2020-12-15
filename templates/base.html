@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Главная страница{% endblock %}</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<div id="header" align="center">
+    <span class="logo">Домашний проект Филиппова Константина @ Direct Line Academy</span>
+    {% if request.user.is_authenticated %}
+    <p>Текущий пользователь: {{ request.user }} <a href="/account/logout">Выйти</a></p>
+    {% else %}
+    <p>Вы не авторизованы. <a href="{% url 'account:login' %}">Войти</a> | <a href="{% url 'account:signup' %}">Зарегистрироваться</a></p>
+    {% endif %}
+</div>
+<div align="center"><a href="{% url 'ads:full_list' %}">Полный список публикаций</a></div>
+<div align="center"><a href="{% url 'ads:ad_create' %}">Добавить объявление</a></div>
+<div align="center">
+  <form method="GET" action="{% url 'ads:category_list' %}">
+      {{ category_form }}
+      <button type="submit">Выбрать</button>
+  </form>
+</div>
+<div id="content">
+    {% block content %}
+    {% endblock %}
+</div>
+</body>
+</html>

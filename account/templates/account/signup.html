@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Signup{% endblock %}
+{% block content %}
+  {% if not registered %}
+<h3>Регистрация</h3>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+          <h3>{{ field }}</h3>
+          <ul>{{ field.errors }}</ul>
+        {% endfor %}
+        <button type="submit">Зарегистроваться</button>
+    </form>
+  {% else %}
+    <h3>Вы успешно зарегистрированы</h3>
+    <a href="{% url 'account:login' %}">Войти</a>
+  {% endif %}
+{% endblock %}
