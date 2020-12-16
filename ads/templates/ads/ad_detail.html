@@ -10,7 +10,7 @@
             {% endfor %}
         </p>
             <p> {{ ad_detail.date_pub }} </p>
-            {{ ad_detail.title }}
+            <p>{{ ad_detail.title }}</p>
             {% if ad_detail.photo %}
             <p> <img alt="ad's image" src="{{ ad_detail.photo.url }}" style="width: 50%; height: 50%;"></p>
             {% else %}

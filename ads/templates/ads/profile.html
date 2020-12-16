@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Профиль{% endblock %}
+{% block content %}
+  <h1>{{ profile.user.username }}</h1>
+  <h2>Дата рождения: {{ profile.birth_time|date:"d F Y" }}
+  </h2>
+  <h2>
+      <img class="avatar" src="{{ profile.avatar.url }}">
+  </h2>
+{% if user.id == profile.user.id %}
+  <a href="{% url 'ads:edit_profile' user.id %}">Редактировать профиль</a>
+{% endif %}
+  <p>Публикации:</p>
+  {% for ad in profile.user.ad_set.all %}
+    <p><a href="{% url 'ads:ad_detail' ad.id %}">{{ ad.title }}</a></p>
+  {% endfor %}
+{% endblock %}

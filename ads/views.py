@@ -1,10 +1,10 @@
 from django.contrib.auth.decorators import login_required
+from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
-from .models import Ad, Category
+from .models import Ad, Category, Profile
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView
-from .forms import ADForm, CategoryChoice
-from django.utils import timezone
+from .forms import ADForm, CategoryChoice, UpdateProfileForm
 
 
 class IndexView(ListView):
@@ -28,15 +28,6 @@ class FullListView(ListView):
         return full_list
 
 
-# def ad_detail(request, ad_id):
-#     detail = get_object_or_404(Ad, id=ad_id)
-#     template = loader.get_template('ads/ad_detail.html')
-#     context = {
-#         'detail': detail
-#     }
-#     return HttpResponse(template.render(context, request))
-
-
 class AdDetail(DetailView):
     model = Ad
     template_name = 'ads/ad_detail.html'
@@ -46,8 +37,10 @@ class AdDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         ad = self.get_object()
-        context.update({'button_fav': "в избранном" if self.request.user in ad.favorite.all() else "добавить в избранное"})
-        context.update({'category': ad.categories.all()})
+        context.update({
+            'button_fav': "в избранном" if self.request.user in ad.favorite.all() else "добавить в избранное"})
+        context.update({
+            'category': ad.categories.all()})
         return context
 
 
@@ -101,45 +94,13 @@ def ad_create(request):
     elif request.method == 'POST':
         form = ADForm(request.POST, request.FILES)
         if form.is_valid():
-            ad = form.save(commit=False)
-            ad.date_pub = timezone.now()
+            ad = form.save(commit=True)
             ad.author = request.user
             ad.save()
-            context['ad_create_result'] = 'Объявление создано'
             return redirect('ads:ad_detail', ad_id=ad.id)
         else:
-            context['ad_create_result'] = 'Объявление не создано'
             context['form'] = form
             return render(request, template_name, context)
-
-
-def ad_edit(request, ad_id):
-    ad = get_object_or_404(Ad, id=ad_id)
-    if request.method == 'POST':
-        form = ADForm(request.POST, request.FILES, instance=ad)
-        if form.is_valid():
-            ad = form.save(commit=False)
-            ad.author = request.user
-            ad.date_pub = timezone.now()
-            ad.save()
-            return redirect('ad_detail', id=ad_id)
-    else:
-        form = ADForm(instance=ad)
-    return render(request, 'ads/ad_edit.html', {'form': form})
-
-
-# def ad_remove(request, ad_id):
-#     ad = get_object_or_404(Ad, id=ad_id)
-#     context = {'ad_remove_result': 'Невозможно удалить'}
-#     if request.method == 'POST':
-#         if request.user.is_staff == 1:
-#             Ad.objects.filter(id=ad_id).delete()
-#             return HttpResponse('Объявление удалено')
-#         elif request.user == ad.author:
-#             Ad.objects.filter(id=ad_id).delete()
-#             return HttpResponse('Объявление удалено')
-#         else:
-#             return render(request, 'ads/ad_detail.html', context)
 
 
 def category_choice(request):
@@ -168,3 +129,62 @@ class CategoryView(ListView):
     #     context.update({'category': self.category})
     #     return context
 
+
+class ProfileView(DeleteView):
+    model = Profile
+    template_name = 'ads/profile.html'
+
+    def get_object(self):
+        return get_object_or_404(Profile, user__id=self.kwargs['user_id'])
+
+
+class EditProfileView(UpdateView):
+    model = Profile
+    form_class = UpdateProfileForm
+    template_name = 'ads/edit_profile.html'
+    slug_field = 'user_id'
+    slug_url_kwarg = 'user_id'
+
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.user != self.request.user:
+            raise Http404("Это не ваш профиль")
+        return super(EditProfileView, self).dispatch(request, *args, **kwargs)
+
+    def get_success_url(self):  # возвращает путь для перенаправления
+        user_id = self.kwargs['user_id']
+        return reverse('user:profile', args=(user_id, ))
+
+# @login_required
+# def ad_edit(request, ad_id):
+#     ad = get_object_or_404(Ad, id=ad_id)
+#     if request.method == 'POST':
+#         form = ADForm(request.POST, request.FILES, instance=ad)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('ad_detail', id=ad_id)
+#     else:
+#         form = ADForm(instance=ad)
+#     return render(request, 'ads/ad_edit.html', {'form': form})
+
+
+# def ad_remove(request, ad_id):
+#     ad = get_object_or_404(Ad, id=ad_id)
+#     context = {'ad_remove_result': 'Невозможно удалить'}
+#     if request.method == 'POST':
+#         if request.user.is_staff == 1:
+#             Ad.objects.filter(id=ad_id).delete()
+#             return HttpResponse('Объявление удалено')
+#         elif request.user == ad.author:
+#             Ad.objects.filter(id=ad_id).delete()
+#             return HttpResponse('Объявление удалено')
+#         else:
+#             return render(request, 'ads/ad_detail.html', context)
+
+# def ad_detail(request, ad_id):
+#     detail = get_object_or_404(Ad, id=ad_id)
+#     template = loader.get_template('ads/ad_detail.html')
+#     context = {
+#         'detail': detail
+#     }
+#     return HttpResponse(template.render(context, request))

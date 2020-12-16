@@ -6,15 +6,13 @@
     {% for ad in category_view %}
     <li>
         <p> {{ ad.author }} </p>
-        <p> {{ category }} </p>
-        <a href="{% url 'ads:ad_detail' ad.id %}">
-            <p> {{ ad.date_pub }} </p>
-            {% if ad.photo %}
-            <p> <img alt="ad's image" src="{{ ad.photo.url }}" style="width: 10%; height: 10%;"></p>
-            {% else %}
-            <p>Нет ни одной фотографии</p>
-            {% endif %}
-        </a>
+        <a href="{% url 'ads:ad_detail' ad.id %}"><p> {{ ad.title }}</p></a>
+        <p> {{ ad.date_pub }} </p>
+        {% if ad.photo %}
+          <p><img alt="ad's image" src="{{ ad.photo.url }}" style="width: 10%; height: 10%;"></p>
+        {% else %}
+        <p>Нет ни одной фотографии</p>
+        {% endif %}
         <p> {{ ad.short_text }} </p>
         <hr>
         {% endfor %}
