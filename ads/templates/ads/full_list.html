@@ -5,7 +5,7 @@
 <ul>
     {% for ad in full_list %}
     <li>
-        <p> Автор: <a href="{% url 'ads:profile' user.id %}">{{ ad.author.id }} {{ ad.author }}</a></p>
+        <p> Автор: <a href="{% url 'ads:profile' user.id %}">{{ ad.author }}</a></p>
         <p> Категории: {% for set in ad.categories.all %}
             {{ set }}
             {% endfor %}

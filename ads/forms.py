@@ -15,7 +15,9 @@ class ADForm(forms.ModelForm):
         }
 
         widgets = {
-            'title': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Введите заголовок'}),
+            'title': forms.Textarea(attrs={
+                'class': 'form-control', 'placeholder': 'Введите заголовок', 'rows': 1, 'autofocus': 'autofocus'
+            }),
             'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Введите текст объявления'}),
             'photo': forms.ClearableFileInput(attrs={'type': 'file', 'class': 'form-control-file'})
         }
