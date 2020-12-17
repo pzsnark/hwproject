@@ -6,5 +6,9 @@ margin:1px auto;
 }
 
 hr {
-margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #d5d5d5;
+size: 0px;
+}
+
+.ad {
+background-color: #E2E2E2;
 }

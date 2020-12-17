@@ -7,6 +7,8 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import reverse, redirect, render
 from django.views.generic import View
+
+from ads.models import Profile
 from .forms import LoginForm, SignupForm
 
 # authenticate() проверяет учетные данные пользователя и возвращает user объект в случае успеха
@@ -53,6 +55,7 @@ class SignupView(View):
             user.email = user_form.cleaned_data['email']
             user.save()
             registered = True
+            Profile.objects.create(user_id=user.id, avatar='users/default.png')
             return render(request, 'account/signup.html', {'registered': registered})
         else:
             return render(request, 'account/signup.html',

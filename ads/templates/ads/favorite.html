@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Полный список объявлений{% endblock %}
+{% block content %}
+  {% if favorite_view %}
+    <h1>Список избранного</h1>
+    <div>
+    {% for ad in favorite_view %}
+      <div class="ad">
+      <p>{{ ad.author }}</p>
+      <p><a href="{% url 'ads:ad_detail' ad.id %}">{{ ad.title }}</a></p>
+      </div><br>
+    {% endfor %}
+  {% endif %}
+{% endblock %}

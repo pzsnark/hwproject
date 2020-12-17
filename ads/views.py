@@ -155,6 +155,21 @@ class EditProfileView(UpdateView):
         user_id = self.kwargs['user_id']
         return reverse('user:profile', args=(user_id, ))
 
+
+class FavoriteView(ListView):
+    model = Ad
+    template_name = 'ads/favorite.html'
+    context_object_name = 'favorite_view'
+    pk_url_kwarg = 'user_id'
+
+    # def get(self, *args, **kwargs):
+    #     self.category = get_object_or_404(Category, id=self.kwargs['category_id'])
+    #     return super().get(self, *args, **kwargs)
+
+    def get_queryset(self):
+        return super(FavoriteView, self).get_queryset().filter(favorite=self.kwargs['user_id']).order_by('-date_pub')
+
+
 # @login_required
 # def ad_edit(request, ad_id):
 #     ad = get_object_or_404(Ad, id=ad_id)

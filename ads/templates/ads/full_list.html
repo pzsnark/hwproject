@@ -2,10 +2,10 @@
 {% block title %}Полный список объявлений{% endblock %}
 {% block content %}
 {% if full_list %}
-<ul>
     {% for ad in full_list %}
-    <li>
-        <p> Автор: <a href="{% url 'ads:profile' user.id %}">{{ ad.author }}</a></p>
+<div class="ad">
+    <div style="margin-left: 10px;">
+        <p> Автор: <a href="{% url 'ads:profile' ad.author.id %}">{{ ad.author }}</a></p>
         <p> Категории: {% for set in ad.categories.all %}
             {{ set }}
             {% endfor %}
@@ -18,9 +18,10 @@
             <p>Нет ни одной фотографии</p>
             {% endif %}
         <p> {{ ad.short_text }} </p>
-        <hr />
-        {% endfor %}
-</ul>
+    </div>
+</div>
+    {% endfor %}
+
 {% else %}
 <p>Нет ни одной публикации</p>
 {% endif %}

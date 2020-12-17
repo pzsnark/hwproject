@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from django.urls import path
 from .views import IndexView, FullListView, AdDetail, ad_favor, ad_create, category_choice,\
-    CategoryView, AdEdit, AdDelete, ProfileView, EditProfileView
+    CategoryView, AdEdit, AdDelete, ProfileView, EditProfileView, FavoriteView
 from django.views.generic import TemplateView
 
 app_name = 'ads'
@@ -19,4 +19,5 @@ urlpatterns = [
     path('category_list/<int:category_id>', CategoryView.as_view(), name='category_view'),
     path('<int:user_id>/profile/', ProfileView.as_view(), name='profile'),
     path('<int:user_id>/edit_profile/', EditProfileView.as_view(), name='edit_profile'),
+    path('<int:user_id>/favorite/', FavoriteView.as_view(), name='favorite'),
 ]
