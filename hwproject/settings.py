@@ -137,3 +137,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 LOGIN_REDIRECT_URL = reverse_lazy('ads:index')
 LOGIN_URL = reverse_lazy('account:login')
 LOGOUT_URL = reverse_lazy('account:logout')
+
+EMAIL_USE_SSL = True
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'filippov@avsst.ru'
+EMAIL_HOST_PASSWORD = 'bemttslkxzebjdpu'
+DEFAULT_FROM_EMAIL = 'filippov@avsst.ru'
+

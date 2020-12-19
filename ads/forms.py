@@ -25,13 +25,8 @@ class ADForm(forms.ModelForm):
 
 class CategoryChoice(forms.Form):
     categories = forms.ModelChoiceField(
-        queryset=Category.objects.all()
+        queryset=Category.objects.all(), label='Категории', empty_label=None
      )
-    #
-    # class Meta:
-    #     model = Category
-    #     fields = ['name']
-    #     labels = {'name': 'Категория'}
 
 
 class UpdateProfileForm(forms.ModelForm):

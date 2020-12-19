@@ -21,6 +21,6 @@ urlpatterns = [
     path('password_reset/<str:uidb64>/<slug:token>', PasswordResetConfirmView.as_view(
         success_url=reverse_lazy('account:password_reset_complete')
     ), name='password_reset_confirm'),
-    path('password_reset/complete', PasswordResetCompleteView.as_view(), name='password_reset_complete'),
-
+    path('password_reset/complete', PasswordResetCompleteView.as_view(
+        template_name='account/password_reset_complete.html'), name='password_reset_complete'),
 ]
