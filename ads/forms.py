@@ -44,3 +44,8 @@ class UpdateProfileForm(forms.ModelForm):
         labels = {
             'avatar': 'Аватар'
         }
+
+class CommentForm(forms.ModelForm):
+
+    class Meta:
+        model = Comment

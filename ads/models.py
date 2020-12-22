@@ -36,3 +36,19 @@ class Ad(models.Model):
     @property
     def short_text(self):
         return self.description[:25]
+
+
+class Comment(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.TextField(max_length=300)
+    in_ad = models.ForeignKey(Ad, on_delete=models.CASCADE)
+    data_pub = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return 'Author: {0}, Ad: {1}'.format(self.author.username, self.in_ad.id)
+
+
+class Message(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.TextField(max_length=300)
+    in_user = models.ManyToManyField(User, on_delete=models.CASCADE, related_name='in_user')
