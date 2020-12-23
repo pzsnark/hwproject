@@ -2,9 +2,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
-from .models import Ad, Category, Profile
+from .models import Ad, Category, Profile, Comment, Message
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView
-from .forms import ADForm, CategoryChoice, UpdateProfileForm
+from .forms import ADForm, CategoryChoice, UpdateProfileForm, CommentForm
 
 
 class IndexView(ListView):
@@ -33,15 +33,51 @@ class AdDetail(DetailView):
     template_name = 'ads/ad_detail.html'
     context_object_name = 'ad_detail'
     pk_url_kwarg = 'ad_id'
+    comment_form = CommentForm
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        ad = self.get_object()
-        context.update({
-            'button_fav': "в избранном" if self.request.user in ad.favorite.all() else "добавить в избранное"})
-        context.update({
-            'category': ad.categories.all()})
-        return context
+    def get(self, request, ad_id, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data(object=self.object)
+        context['comments'] = Comment.objects.filter(ad__id=ad_id).order_by('-date_pub')
+        if self.request.user in self.object.favorite.all():
+            context['button_fav'] = 'в избранном'
+        else:
+            context['button_fav'] = 'добавить в избранное'
+        if request.user.is_authenticated:
+            context['comment_form'] = self.comment_form
+        return self.render_to_response(context)
+
+        # context = super().get_context_data(**kwargs)
+        # ad = self.get_object()
+        # context.update({
+        #     'button_fav': "в избранном" if self.request.user in ad.favorite.all() else "добавить в избранное"})
+        # context.update({
+        #     'category': ad.categories.all()})
+        # context.update({
+        #     'comment_form': self.comment_form})
+        # return context
+
+    def post(self, request, ad_id):
+        ad = get_object_or_404(Ad, id=ad_id)
+        form = self.comment_form(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.ad = ad
+            comment.save()
+            return render(request, self.template_name, context={
+                'comment_form': self.comment_form,
+                'ad_detail': ad,
+                'comments': ad.comments.all().order_by('-date_pub'),
+                'button_fav': "в избранном" if self.request.user in ad.favorite.all() else "добавить в избранное"
+            })
+        else:
+            return render(request, self.template_name, context={
+                'comment_form': form,
+                'ad_detail': ad,
+                'comments': ad.comments.all().order_by('-date_pub'),
+                'button_fav': "в избранном" if self.request.user in ad.favorite.all() else "добавить в избранное"
+            })
 
 
 class AdEdit(UpdateView):

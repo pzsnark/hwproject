@@ -1,5 +1,5 @@
 from django import forms
-from .models import Ad, Category, Profile
+from .models import Ad, Category, Profile, Comment, Message
 
 
 class ADForm(forms.ModelForm):
@@ -45,7 +45,13 @@ class UpdateProfileForm(forms.ModelForm):
             'avatar': 'Аватар'
         }
 
+
 class CommentForm(forms.ModelForm):
 
     class Meta:
         model = Comment
+        fields = ['text']
+
+        widgets = {
+            'text': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Текст комментария'})
+        }

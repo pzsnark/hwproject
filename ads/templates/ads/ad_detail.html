@@ -9,7 +9,7 @@
             {{ set }}
             {% endfor %}
         </p>
-            <p> {{ ad_detail.date_pub }} </p>
+            <p>{{ ad_detail.date_pub }}</p>
             <p>{{ ad_detail.title }}</p>
             {% if ad_detail.photo %}
             <p> <img alt="ad's image" src="{{ ad_detail.photo.url }}" style="width: 50%; height: 50%;"></p>
@@ -31,7 +31,21 @@
             {{ context }}
         {% endif %}
         </form>
-        <hr>
+
+        <br><div class="comments">
+            {% for comment in comments %}
+            <p>{{ comment.author }}</p>
+            <p>{{ comment.date_pub }}</p>
+            <p>{{ comment.text }}</p>
+            {% endfor %}
+        </div>
+        {% if user.is_authenticated %}
+        <form method="post">
+            {% csrf_token %}
+            {{ comment_form.as_p }}
+            <button type="submit">Добавить комментарий</button>
+        </form>
+        {% endif %}
     </li>
 </ul>
 {% else %}

@@ -61,4 +61,3 @@ class SignupForm(UserCreationForm):
         if email and User.objects.filter(email=email).exclude(username=username).exists():
             raise forms.ValidationError('Error addresses must be unique.')
         return email
-
