@@ -4,6 +4,8 @@ body {
     font-family: 'Raleway', sans-serif;
     font-size: 14px;
     color: #6c7279;
+    
+    background-color: #000;
 }
 
 *,
@@ -34,6 +36,7 @@ body {
 .header__inner {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 35px 0;
     
     border-bottom: 1px solid #515369;
@@ -45,5 +48,22 @@ body {
 ====================*/
 
 .nav {
+    display: flex;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.nav__link {
+    margin-left: 50px;
     
+    color: #fff;
+    text-decoration: none;
+    opacity: .75;
+    
+    transition: opacity .1s linear;
+}
+
+.nav__link:hover {
+    opacity: 1;
 }
