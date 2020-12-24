@@ -52,7 +52,7 @@ class Message(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_messages')
     text = models.TextField(max_length=300)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_messages')
-    data_pub = models.DateTimeField(default=timezone.now)
+    date_pub = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return 'Author: {0}, Receiver: {1}'.format(self.author.username, self.user.id)

@@ -2,8 +2,9 @@ from django.conf.urls import url
 from .views import AdLoginView, SignupView, user_logout
 from django.urls import path, reverse_lazy
 from django.contrib.auth.views import (
-    PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView, LogoutView
+    PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
     )
+from account.views import MessageView
 
 app_name = 'account'
 
@@ -23,4 +24,5 @@ urlpatterns = [
     ), name='password_reset_confirm'),
     path('password_reset/complete', PasswordResetCompleteView.as_view(
         template_name='account/password_reset_complete.html'), name='password_reset_complete'),
+    path('message/<int:user_id>', MessageView.as_view(), name='message')
 ]

@@ -2,14 +2,14 @@
 # from django.shortcuts import render, redirect, reverse
 # from django.contrib.auth import authenticate, login, logout
 # from .forms import LoginForm
-
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import reverse, redirect, render
-from django.views.generic import View
+from django.shortcuts import reverse, redirect, render, get_object_or_404
+from django.views.generic import View, DetailView
 
-from ads.models import Profile
-from .forms import LoginForm, SignupForm
+from ads.models import Profile, Message, User
+from .forms import LoginForm, SignupForm, MessageForm
 
 # authenticate() проверяет учетные данные пользователя и возвращает user объект в случае успеха
 # login() задает пользователя в текущей сессии.
@@ -65,6 +65,40 @@ class SignupView(View):
 def user_logout(request):
     logout(request)
     return redirect('account:login')
+
+
+class MessageView(DetailView):
+    model = Message
+    template_name = 'account/message.html'
+    context_object_name = 'messages'
+    pk_url_kwarg = 'user_id'
+    message_form = MessageForm
+
+    @login_required
+    def get(self, request, user_id, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data(object=self.object)
+        context['messages'] = Message.objects.filter(user=user_id).order_by('-date_pub')
+        if request.user.is_authenticated:
+            context['message_form'] = self.message_form
+        return self.render_to_response(context)
+
+    def post(self, request, user_id):
+        user = get_object_or_404(User, id=user_id)
+        form = self.message_form(request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.author = request.user
+            message.save()
+            return render(request, self.template_name, context={
+                'message_form': self.message_form,
+                'messages': user.received_messages.all().order_by('-date_pub'),
+            })
+        else:
+            return render(request, self.template_name, context={
+                'message_form': form,
+                'messages': user.comments.all().order_by('-date_pub'),
+            })
 
 # def user_login(request):
 #     if request.method == 'POST':

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Messages{% endblock %}
+{% block content %}
+{% if messages %}
+    <p>{{ messages.author }}</p>
+    <p>{{ messages.text }}</p>
+    <br>
+{% endif %}
+{% endblock %}

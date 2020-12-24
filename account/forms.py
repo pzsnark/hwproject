@@ -11,6 +11,7 @@
 
 from django.contrib.auth.forms import AuthenticationForm, UsernameField, UserCreationForm
 from django.contrib.auth.models import User
+from ads.models import Message
 from django import forms
 
 
@@ -61,3 +62,14 @@ class SignupForm(UserCreationForm):
         if email and User.objects.filter(email=email).exclude(username=username).exists():
             raise forms.ValidationError('Error addresses must be unique.')
         return email
+
+
+class MessageForm(forms.ModelForm):
+
+    class Meta:
+        model = Message
+        fields = ['text']
+
+        widgets = {
+            'text': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Текст сообщения'})
+        }
