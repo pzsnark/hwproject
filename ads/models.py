@@ -55,4 +55,4 @@ class Message(models.Model):
     date_pub = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return 'Author: {0}, Receiver: {1}'.format(self.author.username, self.user.id)
+        return 'Author: {0}, Receiver: {1}'.format(self.author.username, self.user.username)

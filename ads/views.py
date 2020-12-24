@@ -47,16 +47,6 @@ class AdDetail(DetailView):
             context['comment_form'] = self.comment_form
         return self.render_to_response(context)
 
-        # context = super().get_context_data(**kwargs)
-        # ad = self.get_object()
-        # context.update({
-        #     'button_fav': "в избранном" if self.request.user in ad.favorite.all() else "добавить в избранное"})
-        # context.update({
-        #     'category': ad.categories.all()})
-        # context.update({
-        #     'comment_form': self.comment_form})
-        # return context
-
     def post(self, request, ad_id):
         ad = get_object_or_404(Ad, id=ad_id)
         form = self.comment_form(request.POST)

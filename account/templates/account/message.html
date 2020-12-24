@@ -2,8 +2,15 @@
 {% block title %}Messages{% endblock %}
 {% block content %}
 {% if messages %}
-    <p>{{ messages.author }}</p>
-    <p>{{ messages.text }}</p>
+{% for message in messages %}
+    <p>{{ message.author }}</p>
+    <p>{{ message.text }}</p>
     <br>
+{% endfor %}
+<form method="post">
+{% csrf_token %}
+    <p>{{ message_form.as_p }}</p>
+    <p><button type="submit">Отправить</button> </p>
+</form>
 {% endif %}
 {% endblock %}
