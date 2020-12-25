@@ -1,12 +1,21 @@
 {% extends "base.html" %}
 {% block title %}Messages{% endblock %}
 {% block content %}
+
+{% if request.user.is_authenticated %}
 {% if messages %}
+
+<!--{% for sender in senders %}-->
+<!--    <p><a href="{% url 'account:message' message.author.id %}">{{ sender }}</a></p>-->
+<!--{% endfor %}-->
+
 {% for message in messages %}
-    <p>{{ message.author }}</p>
+    <p><a href="{% url 'account:message' message.author.id %}">{{ message.author }}</a></p>
     <p>{{ message.text }}</p>
     <br>
 {% endfor %}
+{% endif %}
+
 <form method="post">
 {% csrf_token %}
     <p>{{ message_form.as_p }}</p>

@@ -77,7 +77,8 @@ class MessageView(DetailView):
     def get(self, request, user_id, *args, **kwargs):
         self.object = self.get_object()
         context = self.get_context_data(object=self.object)
-        context['messages'] = Message.objects.all().filter(user__id=user_id).order_by('-date_pub')
+        context['messages'] = Message.objects.filter(user_id=user_id).order_by('-date_pub')
+        context['senders'] = User.objects.filter(received_messages__user=request.user)
         if request.user.is_authenticated:
             context['message_form'] = self.message_form
         return self.render_to_response(context)
