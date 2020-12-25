@@ -3,8 +3,16 @@
 {% block content %}
 
 {% if request.user.is_authenticated %}
-{% if messages %}
 
+{% if senders %}
+<p>Список чатов:</p>
+{% for sender in senders %}
+    <p><a href="{% url 'account:message' sender.id %}">{{ sender.username }}</a></p>
+{% endfor %}
+{% endif %}
+
+{% if messages %}
+<br><p>Сообщения:</p>
 {% for message in messages %}
     <p><a href="{% url 'account:message' message.author.id %}">{{ message.author }}</a></p>
     <p>{{ message.text }}</p>

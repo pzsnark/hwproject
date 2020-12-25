@@ -1,10 +1,6 @@
-# from django.http import HttpResponse
-# from django.shortcuts import render, redirect, reverse
-# from django.contrib.auth import authenticate, login, logout
-# from .forms import LoginForm
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import authenticate, login, logout
+from django.db.models import Q
 from django.shortcuts import reverse, redirect, render, get_object_or_404
 from django.views.generic import View, DetailView
 
@@ -77,8 +73,18 @@ class MessageView(DetailView):
     def get(self, request, user_id, *args, **kwargs):
         self.object = self.get_object()
         context = self.get_context_data(object=self.object)
-        context['messages'] = Message.objects.filter(user_id=user_id).order_by('-date_pub')
-        context['senders'] = User.objects.filter(received_messages__user=request.user)
+
+        # пользователи отправлявшие сообщения
+        if request.user.id != user_id:
+            context['senders'] = User.objects.filter(
+                Q(sent_messages__user=request.user) | Q(received_messages__user=request.user)
+            )
+            print(request.user.id, user_id)
+            print(context)
+
+        # сообщения отправителя и получателя
+        context['messages'] = Message.objects.filter(Q(user_id=user_id) | Q(author_id=user_id)).order_by('-date_pub')
+
         if request.user.is_authenticated:
             context['message_form'] = self.message_form
         return self.render_to_response(context)
