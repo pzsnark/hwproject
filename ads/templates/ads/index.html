@@ -3,25 +3,22 @@
 {% block content %}
 {% if last_ad %}
   {% for ad in last_ad %}
-<div class="ad">
-    <div style="margin-left: 10px;">
-        <p> Автор: <a href="{% url 'ads:profile' ad.author.id %}">{{ ad.author }}</a></p>
-        <p> Категории: {% for set in ad.categories.all %}
-            {{ set }}
-            {% endfor %}
-        </p>
-            <p> {{ ad.date_pub }} </p>
-            <p><a href="{% url 'ads:ad_detail' ad.id %}">{{ ad.title }}</a></p>
-            {% if ad.photo %}
-              <p><img alt="ad's image" src="{{ ad.photo.url }}" style="width: 10%; height: 10%;"></p>
-            {% else %}
-            <p>Нет ни одной фотографии</p>
-            {% endif %}
-        <p> {{ ad.short_text }} </p>
+<div class="ads__inner">
+    <div class="ads__inner--author"> Автор: <a href="{% url 'ads:profile' ad.author.id %}">{{ ad.author }}</a><span class="ads__inner--date"> {{ ad.date_pub }} </span></div>
+    <div  class="ads__inner--category"> Категории: {% for set in ad.categories.all %}
+        {{ set }}
+        {% endfor %}
     </div>
+    <div class="ads__inner--title"><a href="{% url 'ads:ad_detail' ad.id %}">{{ ad.title }}</a></div>
+    {% if ad.photo %}
+        <div><img alt="ad's image" src="{{ ad.photo.url }}" style="width: 10%; height: 10%;"></div>
+    {% else %}
+    <div>Нет ни одной фотографии</div>
+    {% endif %}
+    <div class="ads__inner--text"> {{ ad.description }} </div>
 </div>
   {% endfor %}
 {% else %}
-  <p>Нет ни одной публикации</p>
+  <div>Нет ни одной публикации</div>
 {% endif %}
 {% endblock %}}

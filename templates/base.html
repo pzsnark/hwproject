@@ -2,36 +2,73 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{% block title %}Главная страница{% endblock %}</title>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <meta charset="utf-8">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cardo:ital@1&family=Open+Sans:ital,wght@1,700&family=Raleway:wght@400;600;700&display=swap" rel="stylesheet">
+<!--    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">-->
+<!--    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">-->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>Home project</title>
+</head>
+<head>
+    <title>{% block title %}Главная страница{% endblock %}</title>
+
 
 </head>
 <body>
-<div class="header" align="center">
-    <span class="logo">Домашний проект Филиппова Константина @ Direct Line Academy</span>
-    {% if request.user.is_authenticated %}
-    <p>Текущий пользователь: {{ request.user }} <a href="/account/logout">Выйти</a> |
-        <a href="{% url 'ads:profile' user.id %}">Профиль</a> |
-        <a href="{% url 'ads:favorite' user.id %}">Избранное</a> |
-        <a href="{% url 'account:message' user.id %}">Сообщения</a> </p>
-    {% else %}
-    <p>Вы не авторизованы. <a href="{% url 'account:login' %}">Войти</a> | <a href="{% url 'account:signup' %}">Зарегистрироваться</a></p>
-    {% endif %}
+
+    
+<!--Header-->
+<header class="header">
+    <div class="container">
+        <div class="header__inner"><h2>Django Project</h2>            
+            <nav class="nav">
+                {% if request.user.is_authenticated %}
+                Текущий пользователь:&nbsp; <div class="user">{{ request.user }}</div>
+                <a class="nav__link" href="/account/logout">Выйти</a>
+                <a class="nav__link" href="{% url 'ads:profile' user.id %}">Профиль</a>
+                <a class="nav__link" href="{% url 'ads:favorite' user.id %}">Избранное</a>
+                <a class="nav__link" href="{% url 'account:message' user.id %}">Сообщения</a>
+                {% else %}
+                <p>Вы не авторизованы. <a class="nav__link" href="{% url 'account:login' %}">Войти</a> 
+                <a href="{% url 'account:signup' %}">Зарегистрироваться</a></p>
+                {% endif %}
+            </nav>
+        </div>
+    </div>
+</header>
+    
+    
+<!--Option-->
+<div class="option">
+    <div class="container">
+        <div class="option__inner">
+            <a href="{% url 'ads:full_list' %}">Полный список публикаций</a> |
+            <a href="{% url 'ads:ad_create' %}">Добавить объявление</a>
+            <form method="GET" action="{% url 'ads:category_list' %}">
+                {{ category_form }}
+                <button type="submit">Выбрать</button>
+            </form>
+        </div>
+    </div>
 </div>
-<div align="center"><a href="{% url 'ads:full_list' %}">Полный список публикаций</a></div>
-<div align="center"><a href="{% url 'ads:ad_create' %}">Добавить объявление</a></div>
-<div align="center">
-  <form method="GET" action="{% url 'ads:category_list' %}">
-      {{ category_form }}
-      <button type="submit">Выбрать</button>
-  </form>
+
+<!--Ads-->
+<div class="ads">
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
 </div>
-<br>
-<div id="content">
-    {% block content %}
-    {% endblock %}
-</div>
+
+<!--Back-->
+<div class="back">
+    <div class="container">
+        <div class="back__inner">
+            Домашний проект Филиппова Константина @ Direct Line Academy
+        </div>
+    </div>
+</div>    
+    
 </body>
 </html>
