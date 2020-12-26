@@ -66,7 +66,7 @@ def user_logout(request):
 class MessageView(DetailView):
     model = User
     template_name = 'account/message.html'
-    context_object_name = 'messages'
+    context_object_name = 'messages_view'
     pk_url_kwarg = 'user_id'
     message_form = MessageForm
 
@@ -74,19 +74,18 @@ class MessageView(DetailView):
         self.object = self.get_object()
         context = self.get_context_data(object=self.object)
 
-        # пользователи отправлявшие сообщения
-        if request.user.id != user_id:
+        # пользователи отправлявшие и получавшие сообщения
+        if request.user.id == user_id:
             context['senders'] = User.objects.filter(
                 Q(sent_messages__user=request.user) | Q(received_messages__user=request.user)
-            )
-            print(request.user.id, user_id)
-            print(context)
+            ).distinct()
 
         # сообщения отправителя и получателя
-        context['messages'] = Message.objects.filter(Q(user_id=user_id) | Q(author_id=user_id)).order_by('-date_pub')
-
-        if request.user.is_authenticated:
-            context['message_form'] = self.message_form
+        else:
+            context['messages'] = Message.objects.filter(Q(user_id=user_id) | Q(author_id=user_id)).order_by('-date_pub')
+            print(context)
+            if request.user.is_authenticated:
+                context['message_form'] = self.message_form
         return self.render_to_response(context)
 
     def post(self, request, user_id):
