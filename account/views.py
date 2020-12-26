@@ -66,7 +66,7 @@ def user_logout(request):
 class MessageView(DetailView):
     model = User
     template_name = 'account/message.html'
-    context_object_name = 'messages_view'
+    context_object_name = 'message_receiver_user'
     pk_url_kwarg = 'user_id'
     message_form = MessageForm
 
@@ -79,6 +79,7 @@ class MessageView(DetailView):
             context['senders'] = User.objects.filter(
                 Q(sent_messages__user=request.user) | Q(received_messages__user=request.user)
             ).distinct()
+            print(context)
 
         # сообщения отправителя и получателя
         else:

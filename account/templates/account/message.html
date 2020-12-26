@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Messages{% endblock %}
 {% block content %}
-
+{{ messages_view.user_id }}
 {% if request.user.is_authenticated %}
 
 {% if senders %}
@@ -20,10 +20,13 @@
 {% endfor %}
 {% endif %}
 
+{% if message_receiver_user != request.user %}
 <form method="post">
 {% csrf_token %}
     <p>{{ message_form.as_p }}</p>
     <p><button type="submit">Отправить</button> </p>
 </form>
+{% endif %}
+
 {% endif %}
 {% endblock %}
