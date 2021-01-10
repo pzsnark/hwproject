@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Messages{% endblock %}
+{% block content %}
+
+<textarea id="mywidget-{{ widget.name }}" name="{{ widget.name }}">
+    {% if widget.path %}
+    <audio controls>
+        <source src="{{ widget.path }}" type="audio/mpeg">
+        <source src="{{ widget.path }}" type="audio/ogg">
+        Your browser does not support the audio element.
+    </audio>
+    {% endif %}
+</textarea>
+
+{% endblock %}

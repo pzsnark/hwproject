@@ -1,5 +1,5 @@
 from django import forms
-from .models import Ad, Category, Profile, Comment, Message
+from .models import Ad, Category, Profile, Comment
 
 
 class ADForm(forms.ModelForm):
