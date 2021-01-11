@@ -1,5 +1,6 @@
 from django import forms
 from .models import Ad, Category, Profile, Comment
+from .widgets import AudioWidget
 
 
 class ADForm(forms.ModelForm):
@@ -55,3 +56,25 @@ class CommentForm(forms.ModelForm):
         widgets = {
             'text': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Текст комментария'})
         }
+
+
+class AdminFormAd(forms.ModelForm):
+
+    class Meta:
+        model = Ad
+        fields = ['title', 'description', 'favorite', 'photo', 'categories']
+        labels = {
+            'title': 'Заголовок',
+            'description': 'Текст объявления',
+            'favorite': 'В избранном',
+            'photo': 'Выберите фото',
+            'categories': 'Выберите категории'
+        }
+
+        widgets = {
+            'title': forms.Textarea(attrs={
+                'class': 'form-control', 'placeholder': 'Введите заголовок', 'rows': 1, 'autofocus': 'autofocus'
+            }),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Введите текст объявления'}),
+            'photo': forms.ClearableFileInput(attrs={'type': 'file', 'class': 'form-control-file'})
+            }

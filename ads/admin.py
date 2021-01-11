@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.contrib.admin import StackedInline
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
+from .forms import AdminFormAd
 
 from .models import Profile, Ad, Category, Comment, Message
 
@@ -32,7 +33,7 @@ class AdAdmin(admin.ModelAdmin):
     readonly_fields = ['date_pub', 'date_up']
     fieldsets = [
         ('Основные поля', {
-            'fields': ['author', 'title', 'description', 'favorite', 'categories']
+            'fields': ['author', 'title', 'description', 'photo', 'favorite', 'categories']
         }),
         ('Даты/время', {
             'fields': [
@@ -45,6 +46,7 @@ class AdAdmin(admin.ModelAdmin):
     inlines = [CommentInline]
     list_display = ('author', 'title', 'date_pub')
     actions = [delete_old_posts]
+    form = AdminFormAd
 
 
 class ProfileInline(StackedInline):
