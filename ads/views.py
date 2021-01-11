@@ -2,9 +2,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
-from .models import Ad, Category, Profile, Comment, Message
+from .models import Ad, Category, Profile, Comment, Message, Audio
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView
-from .forms import ADForm, CategoryChoice, UpdateProfileForm, CommentForm
+from .forms import ADForm, CategoryChoice, UpdateProfileForm, CommentForm, AudioForm
 
 
 class IndexView(ListView):
@@ -195,6 +195,20 @@ class FavoriteView(ListView):
     def get_queryset(self):
         return super(FavoriteView, self).get_queryset().filter(favorite=self.kwargs['user_id']).order_by('-date_pub')
 
+
+class AudioView(DetailView):
+    model = Audio
+    template_name = 'ads/audio_widget.html'
+    context_object_name = 'audio'
+    pk_url_kwarg = 'track_id'
+    audio_form = AudioForm
+
+    def get(self, request, track_id, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data(object=self.object)
+        context['file'] = Audio.objects.filter(id=track_id)
+        context['audio_form'] = self.audio_form
+        return self.render_to_response(context)
 
 # @login_required
 # def ad_edit(request, ad_id):

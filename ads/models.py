@@ -56,3 +56,12 @@ class Message(models.Model):
 
     def __str__(self):
         return 'Author: {0}, Receiver: {1}'.format(self.author.username, self.user.username)
+
+
+class Audio(models.Model):
+    author = models.TextField(max_length=50, default="unknown author")
+    track = models.TextField(max_length=50, default="unknown track")
+    file = models.FilePathField(path="media/mp3")
+
+    def __str__(self):
+        return 'Author: {0}, Track: {1}'.format(self.author, self.track)
