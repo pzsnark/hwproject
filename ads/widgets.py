@@ -8,12 +8,10 @@ class AudioWidget(Widget):
 
     def get_context(self, name, value, file):
         return {'widget': {
-            'name': name,
-            'value': value,
+            'file': file,
         }}
 
-    def render(self, name, value, attrs=None):
-        context = self.get_context(name, value, attrs)
+    def render(self, name, value, file, attrs=None):
+        context = self.get_context(name, value, file, attrs)
         template = loader.get_template(self.template_name).render(context)
         return mark_safe(template)
-

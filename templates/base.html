@@ -1,11 +1,11 @@
-{% load static %}
 <!DOCTYPE html>
+{% load static %}
 <html>
 <head>
     <meta charset="utf-8">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Cardo:ital@1&family=Open+Sans:ital,wght@1,700&family=Raleway:wght@400;600;700&display=swap" rel="stylesheet">
-<!--    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">-->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <!--    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">-->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <title>Django project</title>
@@ -43,13 +43,11 @@
 <div class="option">
     <div class="container">
         <div class="option__inner">
-            <a href="{% url 'ads:full_list' %}">Полный список публикаций</a> |
             <a href="{% url 'ads:ad_create' %}">Добавить объявление</a>
             <form method="GET" action="{% url 'ads:category_list' %}">
                 {{ category_form }}
                 <button type="submit">Выбрать</button>
             </form>
-            <a href="{% url 'ads:audio' 1 %}">Аудио</a>
         </div>
     </div>
 </div>
@@ -59,17 +57,18 @@
     <div class="container">
         {% block content %}
         {% endblock %}
+        <div class="center"><a href="{% url 'ads:full_list' %}">Полный список публикаций</a></div>
     </div>
 </div>
 
-<!--Back-->
-<div class="back">
+<!--Footer-->
+<footer>
     <div class="container">
-        <div class="back__inner">
+        <div class="footer__inner">
             Домашний проект Филиппова Константина @ Direct Line Academy
         </div>
     </div>
-</div>    
+</footer>>
     
 </body>
 </html>

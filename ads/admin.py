@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.contrib.admin import StackedInline
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
-from .forms import AdminFormAd, AudioForm
+from .forms import AdminFormAd
 
 from .models import Profile, Ad, Category, Comment, Message, Audio
 
@@ -59,6 +59,6 @@ class UserAdmin(UserAdmin):
     inlines = [ProfileInline]
 
 
-class AdminAudio(admin.ModelAdmin):
-    model = Audio
-    form = AudioForm
+# class AdminAudio(admin.ModelAdmin):
+#     model = Audio
+#     form = AudioForm

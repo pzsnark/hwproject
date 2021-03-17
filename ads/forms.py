@@ -80,16 +80,26 @@ class AdminFormAd(forms.ModelForm):
             }
 
 
-class AudioForm(forms.ModelForm):
-
-    class Meta:
-        model = Audio
-        fields = ['author', 'track', 'file']
-        labels = {
-            'author': 'Исполнитель',
-            'track': 'Трек'
-        }
-
-    widgets = {
-        'file': AudioWidget
-    }
+# class AudioForm(forms.ModelForm):
+#
+#     def __init__(self):
+#         super(AudioForm).__init__()
+#         self.fields['file'] = AudioWidget(
+#             queryset=AudioWidget(Audio.objects.all()),
+#             required=False,
+#             widget=AudioWidget(
+#                 file='file'
+#             ),
+#         )
+#
+#     class Meta:
+#         model = Audio
+#         fields = ['author', 'track', 'file']
+#         labels = {
+#             'author': 'Исполнитель',
+#             'track': 'Трек'
+#         }
+#
+#     widgets = {
+#         'file': AudioWidget
+#     }

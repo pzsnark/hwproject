@@ -18,8 +18,8 @@ class TestPostView(TestCase):
 
     def test_response(self):
         client = Client()
-        response = client.get(reverse('core:index'))
-        self.assertEqual(response.status_code, 200)
+        response = client.get(reverse('ads:index'))
+        self.assertEqual(response.status_code, 200)  # сравнение а == b
 
     def test_birth_date_with_future_data(self):
         with self.assertRaises(ValidationError):
