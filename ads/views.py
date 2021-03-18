@@ -179,7 +179,7 @@ class EditProfileView(UpdateView):
 
     def get_success_url(self):  # возвращает путь для перенаправления
         user_id = self.kwargs['user_id']
-        return reverse('user:profile', args=(user_id, ))
+        return reverse('ads:profile', args=(user_id, ))
 
 
 class FavoriteView(ListView):
